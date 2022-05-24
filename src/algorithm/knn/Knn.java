@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Ohmwrecker
@@ -74,8 +75,7 @@ public class Knn {
             System.out.println("count9:" + count9);
             System.out.println("count0:" + count0);
             System.out.println("allCounts:" + (count0+count1+count2+count3+count4+count5+count6+count7+count8+count9));
-
-
+            getTestLabel(testLabels);
 
         }
         catch(Exception e){
@@ -85,23 +85,12 @@ public class Knn {
 
     public static List<Integer> knn(List<int[]> testVectors, List<int[]> trainVectors, List<Integer> trainLabels){
 
-//        for (int[] testVector : testVectors) {
-//            for (int[] trainVector : trainVectors) {
-//                for (int test : testVector) {
-//                    for (int train : trainVector) {
-//                        int testK = test - train;
-//                    }
-//                }
-//            }
-//        }
-
-        final double K = 500.0;
+        final double K = 1200.0;
         double result = 0;
         int currentTrainLabel = 0;
         List<Integer> passedTestLabel = new ArrayList<>();
 
-
-
+        System.out.println("K值：" + K);
         // 42001/1
         for (int[] trainVector : trainVectors) {
             // 200/1
@@ -120,6 +109,54 @@ public class Knn {
             currentTrainLabel ++;
         }
         return passedTestLabel;
+    }
+
+    public static void getTestLabel(List<Integer> testLabel){
+        int count1 = 0,count2 = 0,count3 = 0,count4 = 0,count5 = 0,count6 = 0,count7 = 0,count8 = 0,count9 = 0,count0 = 0;
+
+        for (Integer integer : testLabel) {
+            if (integer == 1){
+                count1++;
+            }
+            if (integer == 2){
+                count2++;
+            }
+            if (integer == 3){
+                count3++;
+            }
+            if (integer == 4){
+                count4++;
+            }
+            if (integer == 5){
+                count5++;
+            }
+            if (integer == 6){
+                count6++;
+            }
+            if (integer == 7){
+                count7++;
+            }
+            if (integer == 8){
+                count8++;
+            }
+            if (integer == 9){
+                count9++;
+            }
+            if (integer == 0){
+                count0++;
+            }
+        }
+        System.out.println("count1:" + count1);
+        System.out.println("count2:" + count2);
+        System.out.println("count3:" + count3);
+        System.out.println("count4:" + count4);
+        System.out.println("count5:" + count5);
+        System.out.println("count6:" + count6);
+        System.out.println("count7:" + count7);
+        System.out.println("count8:" + count8);
+        System.out.println("count9:" + count9);
+        System.out.println("count0:" + count0);
+        System.out.println("allCounts:" + (count0+count1+count2+count3+count4+count5+count6+count7+count8+count9));
     }
 
     /**
