@@ -25,7 +25,7 @@ public class WashRetail {
             while (reader.readRecord()) {
                 originList.add(reader.getValues());
             }
-            // 删除第一行标签
+            // 删除第一行的标签
             originList.remove(0);
             Pattern quantityRegex = Pattern.compile("^\\d+$");
             Pattern priceRegex = Pattern.compile("^\\d+(\\.\\d+)?$");

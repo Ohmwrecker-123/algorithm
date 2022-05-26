@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>第一个 ECharts 实例</title>
+    <!-- 引入 echarts.js -->
+    <script src="https://cdn.staticfile.org/echarts/4.3.0/echarts.min.js"></script>
+</head>
+<body>
+<!-- 为ECharts准备一个具备大小（宽高）的Dom -->
+<div id="main" style="width: 600px;height:400px;margin-left: 30%"></div>
+<script type="text/javascript">
+    // 基于准备好的dom，初始化echarts实例
+    var myChart = echarts.init(document.getElementById('main'));
+
+    // 指定图表的配置项和数据
+    var option = {
+        legend: {},
+        tooltip: {},
+        dataset: {
+            // 提供一份数据。
+            source: [
+                {"month":"2010-12","volume":823746.1399999646},
+                {"month":"2011-1","volume":691364.5600000108},
+                {"month":"2011-2","volume":523631.8900000278},
+                {"month":"2011-3","volume":717639.3600000187},
+                {"month":"2011-4","volume":537808.6210000243},
+                {"month":"2011-5","volume":770536.0200000107},
+                {"month":"2011-6","volume":761739.9000000219},
+                {"month":"2011-7","volume":719221.1910000272},
+                {"month":"2011-8","volume":759138.3800000148},
+                {"month":"2011-9","volume":1058590.171999997},
+                {"month":"2011-10","volume":1154979.2999999207},
+                {"month":"2011-11","volume":1509496.329999743},
+                {"month":"2011-12","volume":638792.680000013}
+            ]
+        },
+        // 声明一个 X 轴，类目轴（category）。默认情况下，类目轴对应到 dataset 第一列。
+        xAxis: {type: 'category'},
+        // 声明一个 Y 轴，数值轴。
+        yAxis: {type: 'value'},
+        // 声明多个 bar 系列，默认情况下，每个系列会自动对应到 dataset 的每一列。
+        series: [
+            {type: 'line'}
+        ]
+    };
+
+    // 使用刚指定的配置项和数据显示图表。
+    myChart.setOption(option);
+</script>
+</body>
+</html>
