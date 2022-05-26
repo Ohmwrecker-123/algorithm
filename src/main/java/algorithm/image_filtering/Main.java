@@ -9,20 +9,23 @@ public class Main {
         try {
             String path = "C:\\Users\\Ohmwrecker\\Desktop\\作业2-5.26\\";
             int[][][] pixels = ImagePixelTool.readPixelsFromImage(path + "origin.jpeg");
-            //执行去色，输出灰度图
+            // 执行去色，输出灰度图
             int[][] grayPixes = ImagePixelTool.convertColorToGray(pixels);
-            //执行存储
+            // 执行存储
             ImagePixelTool.writePixelsToImage(path + "gray.jpeg", grayPixes);
-            //执行噪声添加，输出噪声灰度图
+            // 执行噪声添加，输出噪声灰度图
             int[][] grayPixelsWithNoise = ImagePixelTool.addNoise(grayPixes, 0.02);
-            //执行存储
+            // 执行存储
             ImagePixelTool.writePixelsToImage(path + "gray-noise.jpeg", grayPixelsWithNoise);
-            //图片高宽
+            // 图片高宽
             int height = grayPixelsWithNoise.length, width = grayPixelsWithNoise[0].length;
-            //操作grayPixelsWithNoise数组实现各种滤波器
-            int[][] grayPixelsWithoutNoise = medianFilter(grayPixelsWithNoise, height, width, 3, 3);
+            // Mask大小设置
+            int maskLength = 9;
+            int maskHeight = 9;
+            // 操作grayPixelsWithNoise数组实现各种滤波器
+            int[][] grayPixelsWithoutNoise = medianFilter(grayPixelsWithNoise, height, width, maskLength, maskHeight);
+            // 输出中值滤波降噪后的图片
             ImagePixelTool.writePixelsToImage(path + "gray-withoutNoise.jpeg", grayPixelsWithoutNoise);
-
         }
         catch (Exception e){
             e.printStackTrace();
@@ -89,4 +92,5 @@ public class Main {
         returnNumber = compare[(compareLength-1)/2];
         return returnNumber;
     }
+
 }
