@@ -22,7 +22,6 @@ public class Knn {
             List<Integer> trainLabels = new ArrayList<>();
             readDataSet("C:\\Users\\Ohmwrecker\\Downloads\\作业1\\train.csv", trainVectors, trainLabels);
             // 读取测试集
-
             // 测试集特征向量
             List<int[]> testVectors = new ArrayList<>();
             // 测试集Label

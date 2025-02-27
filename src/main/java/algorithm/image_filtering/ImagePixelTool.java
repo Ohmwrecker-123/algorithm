@@ -6,6 +6,7 @@ import java.awt.image.DataBufferByte;
 import java.awt.image.WritableRaster;
 import java.io.File;
 import java.io.IOException;
+import java.util.Random;
 
 /**
  * @author Teacher
@@ -43,7 +44,7 @@ public class ImagePixelTool {
      * @param p 噪声像素概率
      * @return
      */
-    public static int[][] addNoise(int[][] pixels, double p){
+    public static int[][] addSaltAndPepperNoise(int[][] pixels, double p){
         int height = pixels.length, width = pixels[0].length;
         int[][] pixelsWithNoise = new int[height][width];
         for(int row = 0; row < height; row ++){
@@ -54,6 +55,33 @@ public class ImagePixelTool {
                     pixelsWithNoise[row][col] = noiseFlag < p / 2 ? 0 : 255; //噪声颜色
                 }
                     //非噪声像素
+                else {
+                    pixelsWithNoise[row][col] = pixels[row][col];
+                }
+            }
+        }
+        return  pixelsWithNoise;
+    }
+
+    /**
+     * 为灰度图添加随机噪声
+     * @param pixels
+     * @param p 噪声像素概率
+     * @return
+     */
+    public static int[][] addRandomNoise(int[][] pixels, double p){
+        int height = pixels.length, width = pixels[0].length;
+        int[][] pixelsWithNoise = new int[height][width];
+        for(int row = 0; row < height; row ++){
+            for(int col = 0; col < width; col ++){
+                Random random = new Random();
+                double noiseFlag = Math.random();
+                //添加噪声像素
+                if(noiseFlag <= p) {
+//                    pixelsWithNoise[row][col] = ((int) random.nextGaussian() * 255/2) + 255/2;; //噪声颜色
+                    pixelsWithNoise[row][col] = random.nextInt(255);; //噪声颜色
+                }
+                //非噪声像素
                 else {
                     pixelsWithNoise[row][col] = pixels[row][col];
                 }

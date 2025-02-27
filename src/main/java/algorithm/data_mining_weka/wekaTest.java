@@ -34,6 +34,7 @@ import java.util.Random;
 public class wekaTest {
     static List<String> attrTags = Arrays.asList("Iris-setosa","Iris-versicolor","Iris-virginica");
     static List<String> numAttrTags = Arrays.asList("0","1","2","3","4","5","6","7","8","9");
+    static List<String> wineAttrTags = Arrays.asList("0","1","2","3","4","5","6","7","8","9");
 
     public static Instances createIrisSample(){
 
@@ -45,6 +46,43 @@ public class wekaTest {
                 new Attribute("petalLength"),
                 new Attribute("petalWidth"),
                 new Attribute("irisType",attrTags))),0);
+    }
+
+    public static Instances createWineSample(){
+        return new Instances("wine", new ArrayList(Arrays.asList(
+                new Attribute("fixed acidity"),
+                new Attribute("volatile acidity"),
+                new Attribute("citric acid"),
+                new Attribute("residual sugar"),
+                new Attribute("chlorides"),
+                new Attribute("free sulfur dioxide"),
+                new Attribute("total sulfur dioxide"),
+                new Attribute("density"),
+                new Attribute("pH"),
+                new Attribute("sulphates"),
+                new Attribute("alcohol"),
+                new Attribute("quality",wineAttrTags))),0);
+    }
+
+    public static Instances writeWineInstances(Instances instances,ArrayList<String[]> originList) throws IOException {
+        for (String[] strings : originList) {
+            instances.add(new DenseInstance(1.0, new double[]{
+                    Double.parseDouble(strings[0]),
+                    Double.parseDouble(strings[1]),
+                    Double.parseDouble(strings[2]),
+                    Double.parseDouble(strings[3]),
+                    Double.parseDouble(strings[4]),
+                    Double.parseDouble(strings[5]),
+                    Double.parseDouble(strings[6]),
+                    Double.parseDouble(strings[7]),
+                    Double.parseDouble(strings[8]),
+                    Double.parseDouble(strings[9]),
+                    Double.parseDouble(strings[10]),
+                    wineAttrTags.indexOf(strings[11]),
+            }));
+        }
+        instances.setClassIndex(instances.numAttributes() - 1);
+        return instances;
     }
 
     public static Instances getNumTrainSet() throws Exception {
@@ -93,6 +131,19 @@ public class wekaTest {
         return originList;
     }
 
+    public static ArrayList<String[]> getWineList() throws IOException {
+        String filePath = "C:\\Users\\Ohmwrecker\\Desktop\\大作业-6.12\\大作业选题v2.0\\大作业选题\\Red_Wine_Quality\\winequality-red.csv";
+        ArrayList<String[]> originList = new ArrayList<>();
+
+        //读取csv文件
+        CsvReader reader = new CsvReader(filePath, ',', StandardCharsets.UTF_8);
+        while (reader.readRecord()) {
+            originList.add(reader.getValues());
+        }
+        originList.remove(0);
+        return originList;
+    }
+
     public static Instances writeIrisInstances(Instances instances,ArrayList<String[]> originList){
 
         //创建一个密集向量DenseInstance，写入样本集Instances
@@ -118,7 +169,7 @@ public class wekaTest {
 
     public static void main(String[] args) throws Exception {
 
-        Instances data = writeIrisInstances(createIrisSample(), getIrisList());
+        Instances data = writeWineInstances(createWineSample(),getWineList());
         //打乱顺序
         data.randomize(new Random());
         //划分训练集和测试集，按8:2的比例
@@ -136,7 +187,7 @@ public class wekaTest {
         //不修剪树（不同分类器的选项值参见2.5官方文档）
         options[0] = "-U";
         //创建J48决策树分类器对象
-        DecisionTable cls = new DecisionTable();
+        J48 cls = new J48();
         //设置选项
 //        cls.setOptions(options);
         //训练模型

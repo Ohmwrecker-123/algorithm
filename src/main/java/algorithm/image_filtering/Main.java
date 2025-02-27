@@ -1,20 +1,22 @@
 package algorithm.image_filtering;
 
 
+import java.util.Arrays;
+
 /**
  * @author Ohmwrecker
  */
 public class Main {
     public static void main(String[] args){
         try {
-            String path = "C:\\Users\\Ohmwrecker\\Desktop\\作业2-5.26\\";
-            int[][][] pixels = ImagePixelTool.readPixelsFromImage(path + "origin.jpeg");
+            String path = "C:\\Users\\Administrator\\Desktop\\source\\";
+            int[][][] pixels = ImagePixelTool.readPixelsFromImage(path + "origin.png");
             // 执行去色，输出灰度图
             int[][] grayPixes = ImagePixelTool.convertColorToGray(pixels);
             // 执行存储
             ImagePixelTool.writePixelsToImage(path + "gray.jpeg", grayPixes);
             // 执行噪声添加，输出噪声灰度图
-            int[][] grayPixelsWithNoise = ImagePixelTool.addNoise(grayPixes, 0.02);
+            int[][] grayPixelsWithNoise = ImagePixelTool.addRandomNoise(grayPixes, 0.1);
             // 执行存储
             ImagePixelTool.writePixelsToImage(path + "gray-noise.jpeg", grayPixelsWithNoise);
             // 图片高宽
@@ -28,8 +30,8 @@ public class Main {
             ImagePixelTool.writePixelsToImage(path + "gray-withoutNoise.jpeg", grayPixelsWithoutNoise);
 
             // 输出中值滤波降噪后进行拉普拉斯边缘检测的图片
-            int[][] grayPixelsWithoutNoiseWithLaplace = laplaceFilter(grayPixelsWithoutNoise, grayPixelsWithoutNoise.length, grayPixelsWithoutNoise[0].length, maskLength, maskHeight);
-            ImagePixelTool.writePixelsToImage(path + "gray-withoutNoiseWithLaplace.jpeg", grayPixelsWithoutNoiseWithLaplace);
+//            int[][] grayPixelsWithoutNoiseWithLaplace = laplaceFilter(grayPixelsWithoutNoise, grayPixelsWithoutNoise.length, grayPixelsWithoutNoise[0].length, maskLength, maskHeight);
+//            ImagePixelTool.writePixelsToImage(path + "gray-withoutNoiseWithLaplace.jpeg", grayPixelsWithoutNoiseWithLaplace);
         }
         catch (Exception e){
             e.printStackTrace();
@@ -56,24 +58,48 @@ public class Main {
      * @param maskHeight
      * @return
      */
+//    public static int[][] medianFilter(int[][] grayPixelsWithNoise,int height,int length,int maskLength,int maskHeight){
+//        int[][] currentMask = new int[maskHeight][maskLength];
+//        int[][] grayPixelsWithoutNoise = new int[height-maskHeight+1][length-maskLength+1];
+//        for (int startRow = 0; startRow < length - maskLength + 1; startRow++) {
+//            for (int startColumn = 0; startColumn < height - maskHeight + 1; startColumn++) {
+//                for (int currentMaskLength = 0; currentMaskLength < maskLength; currentMaskLength++) {
+//                    for (int currentMaskHeight = 0; currentMaskHeight < maskHeight; currentMaskHeight++) {
+//                        currentMask[currentMaskLength][currentMaskHeight] = grayPixelsWithNoise[startRow+currentMaskLength][startColumn+currentMaskHeight];
+//                    }
+//                }
+//                // 使用中值滤波
+//                int currentData = medianMaskFilter(currentMask);
+//                grayPixelsWithoutNoise[startRow][startColumn] = currentData;
+//            }
+//        }
+//        return grayPixelsWithoutNoise;
+//    }
+
+    // 中值滤波
     public static int[][] medianFilter(int[][] grayPixelsWithNoise,int height,int length,int maskLength,int maskHeight){
-        int[][] currentMask = new int[maskHeight][maskLength];
-        int[][] grayPixelsWithoutNoise = new int[height-maskHeight+1][length-maskLength+1];
-        for (int startRow = 0; startRow < length - maskLength + 1; startRow++) {
-            for (int startColumn = 0; startColumn < height - maskHeight + 1; startColumn++) {
-                for (int currentMaskLength = 0; currentMaskLength < maskLength; currentMaskLength++) {
-                    for (int currentMaskHeight = 0; currentMaskHeight < maskHeight; currentMaskHeight++) {
-                        currentMask[currentMaskLength][currentMaskHeight] = grayPixelsWithNoise[startRow+currentMaskLength][startColumn+currentMaskHeight];
+        int[][] grayPixelsWithoutNoise = new int[height][length];
+        int[] currentMask = new int[maskHeight*maskLength];
+        for (int i = 0; i < grayPixelsWithoutNoise.length; i++) {
+            for (int j = 0; j < grayPixelsWithoutNoise[0].length; j++) {
+                if (i >= 2 && j >= 2){
+                    int m =0;
+                    for (int k = 0; k < maskHeight; k++) {
+                        for (int l = 0; l < maskLength; l++) {
+                            currentMask[m] = grayPixelsWithNoise[i + k-2][j + l-2];
+                            m ++;
+                        }
                     }
+                    Arrays.sort(currentMask);
+                    grayPixelsWithoutNoise[i][j] = currentMask[(maskHeight*maskLength)/2];
+                    m = 0;
+                }else {
+                    grayPixelsWithoutNoise[i][j] = grayPixelsWithNoise[i][j];
                 }
-                // 使用中值滤波
-                int currentData = medianMaskFilter(currentMask);
-                grayPixelsWithoutNoise[startRow][startColumn] = currentData;
             }
         }
         return grayPixelsWithoutNoise;
     }
-
     /**
      * 拉普拉斯边缘检测滤波器
      * @param grayPixelsWithoutNoise
