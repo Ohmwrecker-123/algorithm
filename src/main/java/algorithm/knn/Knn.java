@@ -12,6 +12,7 @@ import java.util.Map;
  */
 public class Knn {
 
+    // commit test
     public static void main(String[] args){
         try{
             // 读取训练集
