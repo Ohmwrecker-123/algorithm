@@ -2,26 +2,14 @@ package algorithm.data_mining_weka;
 
 import com.csvreader.CsvReader;
 import weka.classifiers.Evaluation;
-import weka.classifiers.bayes.BayesNet;
-import weka.classifiers.meta.Bagging;
-import weka.classifiers.meta.LogitBoost;
-import weka.classifiers.rules.DecisionTable;
-import weka.classifiers.rules.JRip;
-import weka.classifiers.rules.OneR;
+
 import weka.classifiers.trees.J48;
-import weka.classifiers.trees.RandomForest;
 import weka.core.Attribute;
 import weka.core.DenseInstance;
-import weka.core.Instance;
 import weka.core.Instances;
 import weka.core.converters.CSVLoader;
-import weka.core.converters.ConverterUtils;
-import weka.gui.beans.DataSource;
-import weka.gui.beans.Loader;
-
 
 import java.io.*;
-import java.nio.Buffer;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -29,7 +17,7 @@ import java.util.List;
 import java.util.Random;
 
 /**
- * @author Ohmwrecker
+ * @author Ohmwrecker git test
  */
 public class wekaTest {
     static List<String> attrTags = Arrays.asList("Iris-setosa","Iris-versicolor","Iris-virginica");
@@ -38,7 +26,7 @@ public class wekaTest {
 
     public static Instances createIrisSample(){
 
-        return new Instances("iris", new ArrayList(Arrays.asList(
+        return new Instances("iris", new ArrayList<>(Arrays.asList(
                 // 花萼
                 new Attribute("calyxLength"),
                 new Attribute("calyxWidth"),
@@ -49,7 +37,7 @@ public class wekaTest {
     }
 
     public static Instances createWineSample(){
-        return new Instances("wine", new ArrayList(Arrays.asList(
+        return new Instances("wine", new ArrayList<>(Arrays.asList(
                 new Attribute("fixed acidity"),
                 new Attribute("volatile acidity"),
                 new Attribute("citric acid"),
@@ -64,7 +52,7 @@ public class wekaTest {
                 new Attribute("quality",wineAttrTags))),0);
     }
 
-    public static Instances writeWineInstances(Instances instances,ArrayList<String[]> originList) throws IOException {
+    public static Instances writeWineInstances(Instances instances,ArrayList<String[]> originList) {
         for (String[] strings : originList) {
             instances.add(new DenseInstance(1.0, new double[]{
                     Double.parseDouble(strings[0]),
